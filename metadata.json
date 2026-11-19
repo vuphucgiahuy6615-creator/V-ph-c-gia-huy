@@ -1,0 +1,6 @@
+{
+  "name": "Dẫn đường cho Bé Lạc về tổ",
+  "description": "Trò chơi giáo dục kết hợp trí tuệ nhân tạo (Teachable Machine Audio) giúp người chơi dùng giọng nói dẫn đường cho Bé Lạc vượt qua chướng ngại vật để trở về tổ.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

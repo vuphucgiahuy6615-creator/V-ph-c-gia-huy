@@ -1,0 +1,562 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: "Baloo 2", system-ui, -apple-system, sans-serif;
+    --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #ecf8e9;
+    color: #14281d;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono-nums {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Chuyển động đung đưa nhẹ nhàng cho cỏ, hoa và cây ở góc bản đồ */
+@keyframes forest-sway {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3.5deg);
+  }
+}
+
+/* Lá cây rơi chậm từ trên xuống */
+@keyframes leaf-drift {
+  0% {
+    transform: translate3d(-3vw, -8vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65;
+  }
+  80% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(8vw, 96vh, 0) rotate(260deg);
+    opacity: 0;
+  }
+}
+
+/* Những chiếc lá nhỏ bay ngang màn hình */
+@keyframes leaf-glide-x {
+  0% {
+    transform: translate3d(-10vw, 0, 0) rotate(-12deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(52vw, 18px, 0) rotate(95deg);
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate3d(110vw, -12px, 0) rotate(210deg);
+    opacity: 0;
+  }
+}
+
+/* Đứng yên tự nhiên: nhún nhẹ lên xuống và nghiêng đầu dịu dàng (không biến dạng) */
+@keyframes belac-bob {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(0, -3px, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -4.5px, 0) rotate(0deg);
+  }
+  75% {
+    transform: translate3d(0, -2px, 0) rotate(2deg);
+  }
+}
+
+/* Chớp mắt tự nhiên khi Bé Lạc đứng yên */
+@keyframes belac-blink {
+  0%, 44%, 48%, 92%, 96%, 100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  46%, 94% {
+    transform: scaleY(1);
+    opacity: 0.85;
+  }
+}
+
+/* Đi LÊN: Bay nhẹ lên trên và ổn định tại tâm ô mới (300ms) */
+@keyframes belac-move-up {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  45% {
+    transform: translate3d(0, -13px, 0) rotate(-3deg) scale(1.05);
+  }
+  85% {
+    transform: translate3d(0, 1px, 0) rotate(0deg) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Đi XUỐNG: Đáp xuống nhẹ nhàng và giữ nguyên tỷ lệ (300ms) */
+@keyframes belac-move-down {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  40% {
+    transform: translate3d(0, -7px, 0) rotate(4deg) scale(1.04);
+  }
+  82% {
+    transform: translate3d(0, 3px, 0) rotate(0deg) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Đi TRÁI: Nghiêng cơ thể nhẹ sang trái theo hướng di chuyển (300ms) */
+@keyframes belac-move-left {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  45% {
+    transform: translate3d(0, -9px, 0) rotate(-11deg) scale(1.05);
+  }
+  85% {
+    transform: translate3d(0, 2px, 0) rotate(-2deg) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Đi PHẢI: Nghiêng cơ thể nhẹ sang phải theo hướng di chuyển (300ms) */
+@keyframes belac-move-right {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  45% {
+    transform: translate3d(0, -9px, 0) rotate(11deg) scale(1.05);
+  }
+  85% {
+    transform: translate3d(0, 2px, 0) rotate(2deg) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Hai cánh vỗ nhẹ khi di chuyển hoặc ăn mừng */
+@keyframes wing-flap-left {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(-28deg) scale(1.1);
+  }
+}
+
+@keyframes wing-flap-right {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(28deg) scale(1.1);
+  }
+}
+
+/* Khi chiến thắng: Bé Lạc nhảy vui vẻ, vỗ cánh và xoay nhẹ */
+@keyframes belac-victory-jump {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate3d(0, -14px, 0) rotate(-8deg) scale(1.06);
+  }
+  50% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  75% {
+    transform: translate3d(0, -12px, 0) rotate(8deg) scale(1.06);
+  }
+}
+
+/* Khi va vào đá hoặc mép bản đồ: Rung nhẹ tại chỗ */
+@keyframes belac-bump {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate3d(-6px, 0, 0) rotate(-6deg);
+  }
+  40% {
+    transform: translate3d(6px, 0, 0) rotate(6deg);
+  }
+  60% {
+    transform: translate3d(-4px, 0, 0) rotate(-4deg);
+  }
+  80% {
+    transform: translate3d(4px, 0, 0) rotate(4deg);
+  }
+}
+
+/* Tảng đá có chuyển động rung cực nhẹ và phản sáng, rung rõ hơn khi bị va chạm */
+@keyframes rock-idle-breathe {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -1px, 0);
+  }
+}
+
+@keyframes rock-glint {
+  0%, 70%, 100% {
+    opacity: 0.25;
+  }
+  85% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes rock-bump-shake {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(-4px, 0, 0) rotate(-3deg);
+  }
+  50% {
+    transform: translate3d(4px, 0, 0) rotate(3deg);
+  }
+  75% {
+    transform: translate3d(-3px, 0, 0) rotate(-2deg);
+  }
+}
+
+/* Biểu tượng cảnh báo nhỏ bật lên khi va chạm */
+@keyframes warning-pop {
+  0% {
+    transform: translate3d(0, 6px, 0) scale(0.7);
+    opacity: 0;
+  }
+  25% {
+    transform: translate3d(0, -4px, 0) scale(1.08);
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(0, -6px, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, -10px, 0) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* Chiếc tổ phát sáng vàng nhịp nhàng và sáng mạnh khi Bé Lạc đến gần */
+@keyframes nest-gentle-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes nest-near-wobble {
+  0%, 100% {
+    transform: rotate(0deg) scale(1.02);
+  }
+  25% {
+    transform: rotate(-3deg) scale(1.06);
+  }
+  75% {
+    transform: rotate(3deg) scale(1.06);
+  }
+}
+
+@keyframes nest-glow-pulse {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.95;
+  }
+}
+
+/* Ô bản đồ sáng nhẹ khi Bé Lạc vừa bước qua */
+@keyframes tile-visited-glow {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+}
+
+/* Mũi tên chỉ hướng di chuyển xuất hiện thoáng nhẹ cạnh Bé Lạc */
+@keyframes dir-hint-fade {
+  0% {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+/* Sóng âm thanh chuyển động khi micro đang nghe */
+@keyframes ai-wave-bar {
+  0%, 100% {
+    transform: scaleY(0.32);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+/* Vòng phát sáng quanh biểu tượng micro khi đang nghe */
+@keyframes mic-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+
+/* Hiệu ứng nổi bật khi AI nhận diện thành công khẩu lệnh */
+@keyframes command-badge-pop {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.65;
+  }
+  55% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Hiệu ứng lông chim và pháo hoa rơi khi chiến thắng */
+@keyframes feather-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(28px, 45vh, 0) rotate(140deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-20px, 105vh, 0) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+/* Sóng lan nhẹ quanh Bé Lạc khi AI nhận diện thành công */
+@keyframes command-ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.78;
+  }
+  100% {
+    transform: scale(1.48);
+    opacity: 0;
+  }
+}
+
+.animate-forest-sway {
+  animation: forest-sway 3.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-leaf-drift {
+  animation: leaf-drift linear infinite;
+}
+
+.animate-leaf-glide-x {
+  animation: leaf-glide-x linear infinite;
+}
+
+.animate-belac-bob {
+  animation: belac-bob 2.6s ease-in-out infinite;
+}
+
+.animate-belac-blink {
+  animation: belac-blink 4.5s ease-in-out infinite;
+}
+
+.animate-belac-move-up {
+  animation: belac-move-up 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-belac-move-down {
+  animation: belac-move-down 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-belac-move-left {
+  animation: belac-move-left 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-belac-move-right {
+  animation: belac-move-right 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-wing-flap-left {
+  animation: wing-flap-left 150ms ease-in-out 2;
+  transform-origin: right center;
+}
+
+.animate-wing-flap-right {
+  animation: wing-flap-right 150ms ease-in-out 2;
+  transform-origin: left center;
+}
+
+.animate-wing-flap-loop-left {
+  animation: wing-flap-left 280ms ease-in-out infinite;
+  transform-origin: right center;
+}
+
+.animate-wing-flap-loop-right {
+  animation: wing-flap-right 280ms ease-in-out infinite;
+  transform-origin: left center;
+}
+
+.animate-belac-victory {
+  animation: belac-victory-jump 950ms ease-in-out infinite;
+}
+
+.animate-belac-bump {
+  animation: belac-bump 340ms ease-in-out;
+}
+
+.animate-rock-idle {
+  animation: rock-idle-breathe 3.8s ease-in-out infinite;
+}
+
+.animate-rock-glint {
+  animation: rock-glint 4.2s ease-in-out infinite;
+}
+
+.animate-rock-bump {
+  animation: rock-bump-shake 340ms ease-in-out;
+}
+
+.animate-warning-pop {
+  animation: warning-pop 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-nest-idle {
+  animation: nest-gentle-pulse 2.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-nest-wobble {
+  animation: nest-near-wobble 1.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-nest-glow {
+  animation: nest-glow-pulse 1.6s ease-in-out infinite;
+}
+
+.animate-tile-glow {
+  animation: tile-visited-glow 350ms ease-out forwards;
+}
+
+.animate-dir-hint {
+  animation: dir-hint-fade 380ms ease-out forwards;
+}
+
+.animate-ai-wave {
+  animation: ai-wave-bar 0.75s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-mic-glow {
+  animation: mic-glow-pulse 1.8s ease-in-out infinite;
+}
+
+.animate-command-pop {
+  animation: command-badge-pop 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-feather-fall {
+  animation: feather-fall linear infinite;
+}
+
+.animate-command-ripple {
+  animation: command-ripple 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-forest-sway,
+  .animate-leaf-drift,
+  .animate-leaf-glide-x,
+  .animate-belac-bob,
+  .animate-belac-blink,
+  .animate-belac-move-up,
+  .animate-belac-move-down,
+  .animate-belac-move-left,
+  .animate-belac-move-right,
+  .animate-wing-flap-left,
+  .animate-wing-flap-right,
+  .animate-wing-flap-loop-left,
+  .animate-wing-flap-loop-right,
+  .animate-belac-victory,
+  .animate-belac-bump,
+  .animate-rock-idle,
+  .animate-rock-glint,
+  .animate-rock-bump,
+  .animate-warning-pop,
+  .animate-nest-idle,
+  .animate-nest-wobble,
+  .animate-nest-glow,
+  .animate-tile-glow,
+  .animate-dir-hint,
+  .animate-ai-wave,
+  .animate-mic-glow,
+  .animate-command-pop,
+  .animate-feather-fall,
+  .animate-command-ripple {
+    animation: none !important;
+  }
+}
